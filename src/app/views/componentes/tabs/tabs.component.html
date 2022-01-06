@@ -1,17 +1,8 @@
-<app-menu></app-menu>
-<app-header></app-header>
-<ion-content [fullscreen]="true">
-  <div id="container">
-    <img src="./../../../assets/logo.png" alt="" srcset="">
-  </div>
-</ion-content>
-
-<app-tabs></app-tabs>
-<!-- <ion-footer>
+<ion-footer>
   <ion-toolbar>
     <ion-tabs>
       <ion-tab-bar>
-        <ion-tab-button>
+        <ion-tab-button (click)="goToHome()">
           <ion-icon name="home-outline"></ion-icon>
           <ion-label>Home</ion-label>
         </ion-tab-button>
@@ -30,7 +21,8 @@
           <ion-icon name="exit-outline"></ion-icon>
           <ion-label>Salir</ion-label>
         </ion-tab-button>
+
       </ion-tab-bar>
     </ion-tabs>
   </ion-toolbar>
-</ion-footer> -->
+</ion-footer>

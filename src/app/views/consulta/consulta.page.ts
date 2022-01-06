@@ -6,7 +6,7 @@ import {AuthService} from 'src/app/services/auth/auth.service';
 import {CitaService} from 'src/app/services/cita/cita.service';
 import Swal from 'sweetalert2'
 import { ConsultaService } from 'src/app/services/consulta/consulta.service';
-
+import { PacienteService } from 'src/app/services/paciente/paciente.service'
 @Component({
   selector: 'app-consulta',
   templateUrl: './consulta.page.html',
@@ -28,6 +28,7 @@ export class ConsultaPage implements OnInit {
   timerRef;
   running: boolean = false;
   startText = "Start";
+  fecha: any
 
   constructor(
     private router: Router,
@@ -35,7 +36,8 @@ export class ConsultaPage implements OnInit {
     private fb: FormBuilder,
     private auth: AuthService,
     private citaService: CitaService,
-    private consultaService: ConsultaService
+    private consultaService: ConsultaService,
+    private paciente: PacienteService
   ) {
     console.log('CurrentCita', this.router.getCurrentNavigation().extras.state.paciente);
     if(this.router.getCurrentNavigation() != null){
@@ -54,12 +56,6 @@ export class ConsultaPage implements OnInit {
   ngOnInit() {
     //console.log('CurrentPaciente', this.currentPaciente)
     this.consultaForm = this.fb.group({
-      /*consulta_pac_nombre: this.currentCita.detPaciente.nombre,
-      consulta_paciente_primer_apellido: this.currentPaciente.pac_primer_apellido,
-      consulta_paciente_segundo_apellido: this.currentPaciente.pac_segundo_apellido,
-      consulta_pac_email: this.currentPaciente.pac_email,
-      consulta_pac_telefono: this.currentPaciente.pac_telefono,
-      consulta_pac_celular: this.currentPaciente.pac_celular,*/
       consulta_presion_arterial: [''],
       consulta_frec_cardiaca: [''],
       consulta_frec_respiratoria: [''],
@@ -73,16 +69,19 @@ export class ConsultaPage implements OnInit {
   }
 
   enviarConsulta(){
+    console.log('CurrentCita', this.currentPaciente.pac_nombres);
     console.log('CurrentCita', this.currentCita);
-
+    let fecha_consulta = new Date();
+    console.log('Fecha Consulta', fecha_consulta)
     let data = { motivo: 'Cita finalizada', idUser: this.auth.currentUserId, usuario: this.auth.dataUser.userName, accion: 'Terminada', f_termino: new Date()}
     this.currentCita.estatus= 'terminada';
     this.currentCita.historial.push(data);
     this.hora_fin = new Date();
     var duracion = (this.hora_fin - this.hora_inicio)/1000;
     duracion = duracion /60;
-
     let post = this.consultaForm.value
+    post['consulta_pac_nombre'] = this.currentPaciente.pac_nombres,
+    post['consulta_pac_nombre_completo'] = this.currentPaciente.pac_nombres + ' ' + this.currentPaciente.pac_primer_apellido + ' ' + this.currentPaciente.pac_segundo_apellido,
     post['consulta_paciente_primer_apellido'] = this.currentPaciente.pac_primer_apellido,
     post['consulta_paciente_segundo_apellido']= this.currentPaciente.pac_segundo_apellido,
     post['consulta_pac_email']= this.currentPaciente.pac_email,
@@ -93,6 +92,9 @@ export class ConsultaPage implements OnInit {
     post['consulta_hora_inicio'] = moment(this.hora_inicio).format('hh:mm:ss');
     post['consulta_hora_fin'] = moment(this.hora_fin).format('hh:mm:ss');
     post['consulta_cita_idHorario'] = this.currentCita.idHorario;
+    post['consulta_doc'] = this.currentCita.detDoctor.nombre;
+    //post['fecha_consulta'] = moment(fecha_consulta).format('YYYY-MM-DD');
+    post['consulta_pac_f_nacimiento'] = this.currentPaciente.pac_f_nacimiento
     var dur = duracion.toString();
     post['duracion'] = dur.substring(0, 4) + ' ' + 'minutos'
 
@@ -111,7 +113,6 @@ export class ConsultaPage implements OnInit {
       this.citaService.updateCita(this.currentCita);
       this.router.navigate(['home']);
     })
-
   }
 
   startTimer() {

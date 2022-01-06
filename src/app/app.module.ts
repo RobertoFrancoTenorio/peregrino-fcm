@@ -21,7 +21,11 @@ import {MatExpansionModule} from '@angular/material/expansion';
 
 import { CallNumber } from '@awesome-cordova-plugins/call-number/ngx';
 
-import { FCM } from '@awesome-cordova-plugins/fcm/ngx'
+import { FCM } from 'cordova-plugin-fcm-with-dependecy-updated/ionic/ngx'
+import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx'
+import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { LocalNotifications } from '@awesome-cordova-plugins/local-notifications/ngx';
+
 @NgModule({
   declarations: [AppComponent, ],
   entryComponents: [],
@@ -40,6 +44,9 @@ import { FCM } from '@awesome-cordova-plugins/fcm/ngx'
   ],
   providers:
   [
+    LocalNotifications,
+    SplashScreen,
+    StatusBar,
     FCM,
     CallNumber,
     {

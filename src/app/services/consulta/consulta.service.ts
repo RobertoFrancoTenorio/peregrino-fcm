@@ -16,7 +16,7 @@ export class ConsultaService {
     return new Promise<void>((resolve) => {
       const fecha = new Date()
       post['f_consulta'] = fecha;
-      post['fecha_consulta'] = moment(fecha).format('yyyy-mm-dd');
+      post['fecha_consulta'] = moment(fecha).format('YYYY-MM-DD');
       post['id'] = this.afs.createId();
       post['consulta_pac_nombre_completo'] = post['consulta_pac_nombre'] + ' ' + post['consulta_paciente_primer_apellido'] + ' ' + post['consulta_paciente_segundo_apellido']
       console.log('POST', post)

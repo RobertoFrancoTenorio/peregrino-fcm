@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { CitaService } from 'src/app/services/cita/cita.service';
@@ -18,6 +19,7 @@ export class CitasAceptadasPage implements OnInit {
   detPaciente;
   arrayFechas = [];
   arrayCitas = [];
+  suscripcion : Subscription;
   constructor(
     private citaService: CitaService,
     private auth: AuthService,
@@ -27,10 +29,8 @@ export class CitasAceptadasPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.citaService.getCitasEstatus(this.auth.currentUserId, 'aceptada').subscribe(data => {
+    this.suscripcion = this.citaService.getCitasEstatus(this.auth.currentUserId, 'aceptada').subscribe(data => {
       this.citas = data;
-      this.detPaciente = data[0]['extendedProps'].currentCita.detPaciente
-      //console.log('Citas', this.citas[0].extendedProps.currentCita.comentarios)
       for(var i = 0; i < data.length; i++) {
         this.paciente.getPacienteData(this.citas[i].extendedProps.currentCita.detPaciente.id).subscribe(data =>{
           this.currentPaciente = data;
@@ -104,9 +104,28 @@ export class CitasAceptadasPage implements OnInit {
         cita.extendedProps.currentCita.historial.push(data);
         this.citaService.updateCita(cita.extendedProps.currentCita);
         this.router.navigate(['home']);
-        //console.log('Cita', cita.extendedProps.currentCita)
       }
     })
   }
 
+  ngOnDestroy() {
+    this.suscripcion.unsubscribe();
+  }
+
+  goToHome(){
+    this.router.navigate(['/home'])
+  }
+
+  goToCitas(){
+    this.router.navigate(['/citas-asignadas'])
+  }
+
+  goToCitasAceptadas(){
+    this.router.navigate(['/citas-aceptadas'])
+  }
+
+  logout(){
+    this.auth.signOut();
+    console.log('logout');
+  }
 }

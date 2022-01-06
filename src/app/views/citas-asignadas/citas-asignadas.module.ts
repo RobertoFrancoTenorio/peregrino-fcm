@@ -9,6 +9,7 @@ import { CitasAsignadasPageRoutingModule } from './citas-asignadas-routing.modul
 import { CitasAsignadasPage } from './citas-asignadas.page';
 import { MenuComponent } from 'src/app/views/componentes/menu/menu.component';
 import { HeaderComponent } from 'src/app/views/componentes/header/header.component';
+import { TabsComponent } from '../componentes/tabs/tabs.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { HeaderComponent } from 'src/app/views/componentes/header/header.compone
     IonicModule,
     CitasAsignadasPageRoutingModule
   ],
-  declarations: [CitasAsignadasPage, HeaderComponent, MenuComponent]
+  declarations: [CitasAsignadasPage, HeaderComponent, MenuComponent, TabsComponent]
 })
 export class CitasAsignadasPageModule {}

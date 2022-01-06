@@ -9,6 +9,7 @@ import { CitasAceptadasPageRoutingModule } from './citas-aceptadas-routing.modul
 import { CitasAceptadasPage } from './citas-aceptadas.page';
 import { MenuComponent } from '../componentes/menu/menu.component';
 import { HeaderComponent } from '../componentes/header/header.component'
+import { TabsComponent } from '../componentes/tabs/tabs.component'
 
 import {MatExpansionModule} from '@angular/material/expansion';
 
@@ -20,6 +21,6 @@ import {MatExpansionModule} from '@angular/material/expansion';
     CitasAceptadasPageRoutingModule,
     MatExpansionModule
   ],
-  declarations: [CitasAceptadasPage, MenuComponent, HeaderComponent]
+  declarations: [CitasAceptadasPage, MenuComponent, HeaderComponent, TabsComponent]
 })
 export class CitasAceptadasPageModule {}

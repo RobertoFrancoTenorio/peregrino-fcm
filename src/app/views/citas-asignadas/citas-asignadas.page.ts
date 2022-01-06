@@ -3,6 +3,8 @@ import { CitaService } from 'src/app/services/cita/cita.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import Swal from 'sweetalert2';
 import * as moment from 'moment';
+import { Router } from '@angular/router';
+import { PacienteService } from 'src/app/services/paciente/paciente.service';
 
 @Component({
   selector: 'app-citas-asignadas',
@@ -11,19 +13,22 @@ import * as moment from 'moment';
 })
 export class CitasAsignadasPage implements OnInit {
   citas = [];
-  aceptadas = []
+  aceptadas = [];
 
   constructor(
     private citaService: CitaService,
     private auth: AuthService,
+    private router: Router,
+    private paciente: PacienteService
   ) { }
 
   ngOnInit() {
+    console.log('On init')
     this.citaService.getCitasEstatus(this.auth.currentUserId, 'asignada').subscribe(data => {
       this.citas = data;
       for(var i = 0; i < data.length; i++) {
-        console.log('citas', this.citas[i]);
-        console.log(this.citas[i]['f_cita'])
+        //console.log('citas', this.citas[i]);
+        //console.log(this.citas[i]['f_cita'])
         this.citas[i]['f_cita'] = moment(data[i]['f_cita'].seconds*1000).format('YYYY-MM-DD');
       }
     })
@@ -93,4 +98,20 @@ export class CitasAsignadasPage implements OnInit {
     this.citaService.updateCita(post);
   }
 
+  goToHome(){
+    this.router.navigate(['/home'])
+  }
+
+  goToCitas(){
+    this.router.navigate(['/citas-asignadas'])
+  }
+
+  goToCitasAceptadas(){
+    this.router.navigate(['/citas-aceptadas'])
+  }
+
+  logout(){
+    this.auth.signOut();
+    console.log('logout');
+  }
 }
